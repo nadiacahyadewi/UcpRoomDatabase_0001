@@ -11,7 +11,7 @@ import com.example.ucp2.data.entity.Dokter
 import com.example.ucp2.data.entity.Jadwal
 
 //mendefinisikan database dengan tabel Dokter dan Jadwal
-@Database(entities = [Dokter::class], [Jadwal::class], version = 1, exportSchema = false)
+@Database(entities = [Dokter::class, Jadwal::class], version = 1, exportSchema = false)
 abstract class DatabaseJd : RoomDatabase() {
 
     //mendefinisikan fungsi untuk mengakses data Dokter dan Jadwal
