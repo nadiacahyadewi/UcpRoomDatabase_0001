@@ -8,6 +8,10 @@ object DestinasiHome : AlamatNavigasi {
     override val route = "home"
 }
 
+object DestinasiHomeJadwal : AlamatNavigasi {
+    override val route = "home_jad"
+}
+
 object DestinasiDetail : AlamatNavigasi {
     override val route = "detail"
     const val ID = "id"
