@@ -10,7 +10,7 @@ import com.example.ucp2.repository.RepositoryDok
 import kotlinx.coroutines.launch
 
 data class DokterEvent(
-    val id: String = "",
+    val id: Int = 0,
     val nama: String = "",
     val spesialis: String = "",
     val klinik: String = "",
@@ -68,11 +68,10 @@ class DokterViewModel(
     fun validateFields(): Boolean {
         val event = uiState.dokterEvent
         val errorState = FormErrorState(
-            id = if (event.id.isNotEmpty()) null else "ID tidak boleh kosong",
             nama = if (event.nama.isNotEmpty()) null else "Nama tidak boleh kosong",
             spesialis = if (event.spesialis.isNotEmpty()) null else "Spesialis tidak boleh kosong",
             klinik = if (event.klinik.isNotEmpty()) null else "Klinik tidak boleh kosong",
-            noHp = if (event.noHp.isNotEmpty()) null else "Nomor Telfon tidak boleh kosong",
+            noHp = if (event.noHp.isNotEmpty()) null else "Nomor Telepon tidak boleh kosong",
             jamKerja = if (event.jamKerja.isNotEmpty()) null else "Jam Kerja tidak boleh kosong",
         )
 
