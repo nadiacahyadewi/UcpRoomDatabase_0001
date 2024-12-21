@@ -80,20 +80,6 @@ fun FormDokter(
             color = Color.Red
         )
 
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = dokterEvent.id,
-            onValueChange = {
-                onValueChange(dokterEvent.copy(id = it))
-            },
-            label = { Text("ID")},
-            isError = errorState.id != null,
-            placeholder = { Text("Masukkan ID")},
-        )
-        Text(
-            text = errorState.id ?: "",
-            color = Color.Red
-        )
 
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
@@ -112,18 +98,32 @@ fun FormDokter(
 
         Spacer(modifier = Modifier.padding(4.dp))
         DynamicSelectedTextField(
-            selectedValue = chosenDropdown,
+            selectedValue = dokterEvent.spesialis,
             options = Spesialis.options,
             label = "Spesialis",
-            onValueChangedEvent = {
-                chosenDropdown = it
-            }
+            onValueChangedEvent = { Spesialis ->
+                onValueChange(dokterEvent.copy(spesialis = Spesialis))
+            },
+            modifier = Modifier.fillMaxWidth()
         )
         Text(
             text = errorState.spesialis ?: "",
             color = Color.Red
         )
-
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = dokterEvent.klinik,
+            onValueChange = {
+                onValueChange(dokterEvent.copy(klinik = it))
+            },
+            label = { Text("Klinik")},
+            isError = errorState.noHp != null,
+            placeholder = { Text("Masukkan Klinik")},
+        )
+        Text(
+            text = errorState.klinik ?: "",
+            color = Color.Red
+        )
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = dokterEvent.jamKerja,
