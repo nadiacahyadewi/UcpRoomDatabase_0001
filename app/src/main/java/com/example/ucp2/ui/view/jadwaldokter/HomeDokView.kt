@@ -7,6 +7,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
@@ -24,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ucp2.R
+import com.example.ucp2.data.Spesialis
 import com.example.ucp2.data.entity.Dokter
 import com.example.ucp2.ui.viewmodel.HomeDokViewModel
 import com.example.ucp2.ui.viewmodel.PenyediaViewModel
@@ -205,20 +209,61 @@ fun ListDokter(
                         )
                     }
 
-                    Spacer(modifier = Modifier.width(16.dp))
+                    Spacer(modifier = Modifier.width(18.dp))
 
                     Column {
                         Text(
                             text = dok.nama,
                             fontWeight = FontWeight.Bold,
-                            fontSize = 18.sp
+                            fontSize = 19.sp
                         )
                         Text(
-                            text = dok.spesialis ?: "Tidak ada spesialisasi",
-                            fontSize = 14.sp,
-                            color = Color.Gray
+                            text = dok.spesialis,
+                            fontSize = 16.sp,
+                            color = when (dok.spesialis) {
+                                "Umum" -> Color.Blue
+                                "Anak" -> Color.Magenta
+                                "Bedah" -> Color.Gray
+                                "THT" -> Color.Green
+                                "Mata" -> Color.Yellow
+                                "Kulit" -> Color.Cyan
+                                "Psikologi" -> Color.Red
+                                else -> Color.Black
+                            }
                         )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.LocationOn,
+                                contentDescription = "",
+                                modifier = Modifier.size(20.dp)
+                            )
+                            Text(
+                                text = dok.klinik,
+                                fontSize = 14.sp,
+
+                                )
+                        }
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.DateRange,
+                                contentDescription = "",
+                                modifier = Modifier.size(20.dp)
+                            )
+                            Text(
+                                text = dok.jamKerja,
+                                fontSize = 14.sp,
+
+                                )
+                        }
+
                     }
+
                 }
             }
         }
