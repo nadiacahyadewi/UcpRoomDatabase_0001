@@ -1,6 +1,7 @@
 package com.example.ucp2.repository
 
 import com.example.ucp2.data.dao.JadwalDao
+import com.example.ucp2.data.entity.Dokter
 import com.example.ucp2.data.entity.Jadwal
 import kotlinx.coroutines.flow.Flow
 
@@ -16,7 +17,7 @@ class LocalRepositoryJad(
         return jadwalDao.getAllJadwal()
     }
 
-    override fun getJad(id: String): Flow<Jadwal> {
+    override fun getJad(id: Int): Flow<Jadwal> {
         return jadwalDao.getJadwal(id = id)
     }
 
@@ -26,5 +27,9 @@ class LocalRepositoryJad(
 
     override suspend fun updateJad(jadwal: Jadwal) {
         jadwalDao.updateJadwal(jadwal)
+    }
+
+    override fun getAllNamaDokter(): Flow<List<Dokter>> {
+        return jadwalDao.getAllNamaDokter()
     }
 }
