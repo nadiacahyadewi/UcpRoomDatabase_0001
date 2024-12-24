@@ -17,8 +17,9 @@ class LocalRepositoryJad(
         return jadwalDao.getAllJadwal()
     }
 
+    // Di LocalRepositoryJad
     override fun getJad(id: Int): Flow<Jadwal> {
-        return jadwalDao.getJadwal(id = id)
+        return jadwalDao.getJadwal(id)
     }
 
     override suspend fun deleteJad(jadwal: Jadwal) {
@@ -29,7 +30,4 @@ class LocalRepositoryJad(
         jadwalDao.updateJadwal(jadwal)
     }
 
-    override fun getAllNamaDokter(): Flow<List<Dokter>> {
-        return jadwalDao.getAllNamaDokter()
-    }
 }

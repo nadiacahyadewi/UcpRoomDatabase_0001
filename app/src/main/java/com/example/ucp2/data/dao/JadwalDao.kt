@@ -25,7 +25,4 @@ interface JadwalDao {
 
     @Update
     suspend fun updateJadwal(jadwal: Jadwal)
-
-    @Query("SELECT * FROM dokter ORDER BY nama DESC")
-    fun getAllNamaDokter(): Flow<List<Dokter>>
 }

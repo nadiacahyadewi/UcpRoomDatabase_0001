@@ -1,23 +1,30 @@
-package com.example.ucp2.ui.viewmodel
+package com.example.ucp2.ui.viewmodel.jadwal
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.ucp2.data.entity.Dokter
 import com.example.ucp2.data.entity.Jadwal
+import com.example.ucp2.repository.LocalRepositoryJad
 import com.example.ucp2.repository.RepositoryJad
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
+//data class variabel yang mentimpan
+// data input form
 data class JadwalEvent(
-    val id: String = "",
+    val id: Int = 0,
     val namaDokter: String = "",
-    val namaPasien: String = "",
+    val namaPasien: String = "" ,
     val noHp: String = "",
     val tanggalKonsultasi: String = "",
     val status: String = ""
 )
 
+// menyimpan input form ke dalam entity
 fun JadwalEvent.toJadwalEntity(): Jadwal = Jadwal(
     id = id,
     namaDokter = namaDokter,
@@ -27,8 +34,7 @@ fun JadwalEvent.toJadwalEntity(): Jadwal = Jadwal(
     status = status
 )
 
-data class FormErrorState2(
-    val id: String? = null,
+data class FormErrorState(
     val namaDokter: String? = null,
     val namaPasien: String? = null,
     val noHp: String? = null,
@@ -36,8 +42,7 @@ data class FormErrorState2(
     val status: String? = null
 ){
     fun isValid(): Boolean {
-        return id == null
-                && namaDokter == null
+        return namaDokter == null
                 && namaPasien == null
                 && noHp == null
                 && tanggalKonsultasi == null
@@ -45,50 +50,53 @@ data class FormErrorState2(
     }
 }
 
-data class JdwlUIState(
+data class JadUIState(
     val jadwalEvent: JadwalEvent = JadwalEvent(),
-    val isEntryValid: FormErrorState2 = FormErrorState2(),
+    val listNamaDokter: List<Dokter> = emptyList(),
+    val isEntryValid: FormErrorState = FormErrorState(),
     val snackBarMassage: String? = null,
 )
 
 class JadwalViewModel(
-    private val repositoryJdwl: RepositoryJad
+    private val repositoryJad: RepositoryJad
 ) : ViewModel(){
-    var uiState by mutableStateOf(JdwlUIState())
+    var uiState by mutableStateOf(JadUIState())
 
+
+    //Memperbarui state berdasarkan input pengguna
     fun updateState(jadwalEvent: JadwalEvent) {
         uiState = uiState.copy(
-            jadwalEvent = jadwalEvent
+            jadwalEvent = jadwalEvent,
         )
     }
 
-    fun validateFields(): Boolean{
+    // Validasi data input pengguna
+    fun validateFields(): Boolean {
         val event = uiState.jadwalEvent
-        val errorState = FormErrorState2(
-            id = if (event.id.isNotEmpty()) null else "ID tidak boleh kosong",
-            namaDokter = if (event.namaDokter.isNotEmpty()) null else "Nama Dokter harus dipilih",
+        val errorState = FormErrorState(
+            namaDokter = if (event.namaDokter.isNotEmpty()) null else "Nama Dokter tidak boleh kosong",
             namaPasien = if (event.namaPasien.isNotEmpty()) null else "Nama Pasien tidak boleh kosong",
-            tanggalKonsultasi = if (event.tanggalKonsultasi.isNotEmpty()) null else "Tanggal tidak boleh kosong",
-            noHp = if (event.noHp.isNotEmpty()) null else "Nomor Telfon tidak boleh kosong",
+            noHp = if (event.noHp.isNotEmpty()) null else "No Handphone tidak boleh kosong",
+            tanggalKonsultasi = if (event.tanggalKonsultasi.isNotEmpty()) null else "tanggal Konsultasi tidak boleh kosong",
             status = if (event.status.isNotEmpty()) null else "Status tidak boleh kosong",
         )
 
         uiState = uiState.copy(isEntryValid = errorState)
-        return errorState.isValid()
+        return  errorState.isValid()
     }
 
-    //simpan data ke repo
+    //menyimpan data ke repository
     fun saveData() {
         val currentEvent = uiState.jadwalEvent
 
         if (validateFields()) {
             viewModelScope.launch {
                 try {
-                    repositoryJdwl.insertJad(currentEvent.toJadwalEntity())
+                    repositoryJad.insertJad(currentEvent.toJadwalEntity())
                     uiState = uiState.copy(
                         snackBarMassage = "Data berhasil disimpan",
-                        jadwalEvent = JadwalEvent(), // reset input
-                        isEntryValid = FormErrorState2()
+                        jadwalEvent = JadwalEvent(), //reset input form
+                        isEntryValid = FormErrorState() //reset error state
                     )
                 } catch (e: Exception) {
                     uiState = uiState.copy(
@@ -103,8 +111,8 @@ class JadwalViewModel(
         }
     }
 
-    //reset pesean snackbar
-    fun resetSnackbarMessage(){
+    //reset pesan snackbar setelah ditampilkan
+    fun resetSnackBarMessage(){
         uiState = uiState.copy(snackBarMassage = null)
     }
 }

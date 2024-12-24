@@ -15,5 +15,4 @@ interface RepositoryJad {
 
     suspend fun updateJad(jadwal: Jadwal)
 
-    fun getAllNamaDokter(): Flow<List<Dokter>>
 }
