@@ -24,6 +24,6 @@ object DestinasiUpdate : AlamatNavigasi {
     val routeWithArg = "$route/{$ID}"
 }
 
-object DestinasiInsert : AlamatNavigasi{
+object DestinasiInsertJadwal : AlamatNavigasi{
     override val route: String = "insert_jad"
 }
